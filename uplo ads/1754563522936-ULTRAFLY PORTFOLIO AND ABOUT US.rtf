@@ -1,0 +1,413 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9\par
+PORTFOLIO SECTION:\par
+\par
+import React, \{ useEffect \} from "react";\par
+import \{ Helmet, HelmetProvider \} from "react-helmet-async";\par
+import bg1 from '../images/classes/cycling.jpg';\par
+import bg2 from '../images/classes/meditation.jpg';\par
+import bg3 from '../images/classes/A.png';\par
+import bg4 from '../images/classes/app1.png';\par
+import bg5 from '../images/classes/app2.png';\par
+import bg6 from '../images/classes/mobileapps.png';\par
+\par
+function Classes() \{\par
+  useEffect(() => \{\par
+    window.scrollTo(\{ top: 0, left: 0, behavior: "smooth" \});\par
+  \}, []);\par
+\par
+  const projects = [\par
+    \{ bgImg: bg1, title: "Den Mark", trainer: "", date: "", text: "If you think math is hard, try web design." \},\par
+    \{ bgImg: bg2, title: "Sales Life Site - Website", trainer: "", date: "", text: "A website without SEO is like a car with no gas.\rdblquote  Paul Cookson" \},\par
+    \{ bgImg: bg3, title: "Adappt - Website", trainer: "John Flex", date: "Tue: 4:00 pm", text: "Websites promote you 24/7: No employee will do that" \},\par
+    \{ bgImg: bg4, title: "Time Sheet - Website", trainer: "David Rich", date: "Sat: 9:00 am", text: "Digital design is like painting, except the paint never dries." \},\par
+    \{ bgImg: bg5, title: "Mobile App", trainer: "Larry Wheels", date: "Mon: 8:00 pm", text: "A bad website is like a grumpy salesperson." \},\par
+    \{ bgImg: bg6, title: "Mobile App", trainer: "Shawn Ray", date: "Sun: 10:00 am", text: "Website without visitors is like a ship lost in the horizon." \},\par
+  ];\par
+\par
+  const getCardClass = (index) => \{\par
+    switch (index) \{\par
+      case 0:\par
+        return 'card1';\par
+      case 1:\par
+        return 'card2';\par
+      case 2:\par
+        return 'card3';\par
+      case 3:\par
+        return 'card4';\par
+      case 4:\par
+        return 'card5';\par
+      case 5:\par
+        return 'card6';\par
+      default:\par
+        return '';\par
+    \}\par
+  \}\par
+\par
+  return (\par
+    <>\par
+      <HelmetProvider>\par
+        <Helmet>\par
+          <title>Our Portfolio | Ultrafly Solutions</title>\par
+          <meta\par
+            name="description"\par
+            content="Explore our portfolio showcasing successful projects in mobile app development, website development, and digital marketing by Ultrafly Solutions."\par
+          />\par
+          <meta name="keywords" content="portfolio, project showcase, case studies, Ultrafly Solutions" />\par
+        </Helmet>\par
+      </HelmetProvider>\par
+      <section className="portfolio">\par
+        <h1 className="title">Our Portfolio</h1>\par
+        <h1 className="title">Our Recent Projects</h1>\par
+        <div className="card-grid1">\par
+          \{projects.map((project, index) => (\par
+            <div\par
+              className=\{`cardclass $\{getCardClass(index)\}`\}\par
+              key=\{index\}\par
+            >\par
+              <h1 className="project-title">\{project.title\}</h1>\par
+              <div className="inner-box">\par
+                <div className="front" style=\{\{ backgroundImage: `url($\{project.bgImg\})` \}\}>\par
+                  \{/* Optionally add content inside the front of the card */\}\par
+                </div>\par
+                <div className="back">\par
+                  <h1>\{project.title\}</h1>\par
+                  <div className="project-info">\par
+                    <p className="project-text">Text: \{project.text\}</p>\par
+                    <p className="project-trainer">Trainer: \{project.trainer\}</p>\par
+                    <p className="project-date">Date: \{project.date\}</p>\par
+                  </div>\par
+                </div>\par
+              </div>\par
+            </div>\par
+          ))\}\par
+        </div>\par
+      </section>\par
+\par
+      <style jsx>\{`\par
+        body \{\par
+          font-family: Arial, sans-serif;\par
+          background-color: #f0f9f9;\par
+          margin: 0;\par
+          padding: 0;\par
+        \}\par
+\par
+        .portfolio \{\par
+          padding: 8rem;\par
+          text-align: center;\par
+        \}\par
+\par
+        .title \{\par
+          font-size: 2rem;\par
+          margin-bottom: 2rem;\par
+          font-family: Verdana, Arial, Helvetica, sans-serif;\par
+          font-weight: bold;\par
+          color: #333;\par
+        \}\par
+\par
+        .card-grid1 \{\par
+          display: grid;\par
+          grid-template-columns: repeat(3, 1fr);\par
+          gap: 4.5rem;\par
+        \}\par
+\par
+        .card1, .card4, .card5 \{\par
+          grid-column: span 1;\par
+        \}\par
+\par
+        .card2, .card3, .card6 \{\par
+          grid-column: span 2;\par
+        \}\par
+\par
+        .cardclass \{\par
+          height: 300px;\par
+          perspective: 900px;\par
+          border-radius: 40px;\par
+        \}\par
+\par
+        .inner-box \{\par
+          width: 100%;\par
+          height: 100%;\par
+          position: relative;\par
+          transform-style: preserve-3d;\par
+          transition: transform 0.6s;\par
+          position: relative;\par
+          \par
+        \}\par
+\par
+        .cardclass:hover .inner-box \{\par
+          transform: rotateY(180deg);\par
+        \}\par
+\par
+        .front,\par
+        .back \{\par
+          position: absolute;\par
+          width: 100%;\par
+          height: 100%;\par
+          backface-visibility: hidden;\par
+          display: flex;\par
+          align-items: center;\par
+          justify-content: center;\par
+          padding: 1rem;\par
+          box-shadow: 0 8px 10px rgba(0, 0, 3, 0.5);\par
+          border-radius: 20px;\par
+          transition: color 0.4s, background-color 0.4s;\par
+        \}\par
+\par
+        .front \{\par
+          background-size: contain;\par
+          background-repeat: no-repeat;\par
+          background-position: center;\par
+          color: white;\par
+        \}\par
+\par
+        .back \{\par
+          background-size: cover;\par
+          background-position: center;\par
+          color: black;\par
+          transform: rotateY(180deg);\par
+          display: flex;\par
+          flex-direction: column;\par
+          align-items: flex-start; \par
+          justify-content: center;\par
+          background-color: white;\par
+          text-align: left; \par
+          backdrop-filter: blur(8px);\par
+          background-color: rgba(255, 255, 255, 0.3);\par
+          border: 1px solid rgba(255, 255, 255, 0.5);\par
+        \}\par
+\par
+        .cardclass:hover .front \{\par
+          color: white;\par
+        \}\par
+\par
+        .cardclass:hover .back \{\par
+          color: black;\par
+        \}\par
+\par
+        .project-title \{\par
+          margin: 0;\par
+          transition: color 0.4s;\par
+          font-family: Papyrus;\par
+          padding:10px;\par
+          font-weight: bold;\par
+          font-size:24px;\par
+          \par
+        \}\par
+\par
+        .cardcard:hover .project-title \{\par
+          visibility: hidden;\par
+        \}\par
+\par
+        .project-info \{\par
+          display: inline-block; /* Align text as inline-block */\par
+          gap: 0.5rem; /* Add space between elements */\par
+        \}\par
+\par
+        .project-text,\par
+        .project-trainer,\par
+        .project-date \{\par
+          margin: 0.5rem 0;\par
+          transition: color 0.4s;\par
+        \}\par
+\par
+        .cardclass:hover .project-text,\par
+        .cardclass:hover .project-trainer,\par
+        .cardclass:hover .project-date \{\par
+          color: black;\par
+        \}\par
+\par
+        @media (max-width: 1024px) \{\par
+          .card-grid1 \{\par
+            grid-template-columns: repeat(2, 1fr);\par
+          \}\par
+\par
+          .cardclass \{\par
+            height: 300px;\par
+          \}\par
+\par
+          .inner-box \{\par
+            width: 100%;\par
+            height: 100%;\par
+          \}\par
+\par
+          .card2, .card3, .card6 \{\par
+            grid-column: span 1;\par
+          \}\par
+        \}\par
+\par
+        @media (max-width: 768px) \{\par
+          .card-grid1 \{\par
+            grid-template-columns: 1fr;\par
+          \}\par
+\par
+          .cardclass \{\par
+            height: 200px;\par
+          \}\par
+\par
+          .inner-box \{\par
+            width: 100%;\par
+            height: 100%;\par
+            background-color: white;\par
+          \}\par
+\par
+          .card1, .card2, .card3, .card4, .card5, .card6 \{\par
+            grid-column: span 1;\par
+          \}\par
+\par
+          .portfolio \{\par
+            padding: 6rem;\par
+          \}\par
+        \}\par
+      `\}</style>\par
+    </>\par
+  );\par
+\}\par
+\par
+export default Classes;\par
+\par
+\par
+\par
+\par
+\par
+ABOUT SECTION:\par
+\par
+import Footer from "../components/Footer/Footer";\par
+import GirlRunning from "../images/who-we-are/girl-run.png";\par
+import GirlRedBg from "../images/who-we-are/girl-redbg.svg";\par
+import GirlText from "../images/who-we-are/girl-side-text.png";\par
+import GirlWind from "../images/who-we-are/wind.png";\par
+\par
+import MainButton from "../components/MainButton";\par
+import Img3 from "../images/AboutPage/3.jpg";\par
+import Img4 from "../images/AboutPage/4.jpg";\par
+import Target from "../images/AboutPage/target.png";\par
+import Mountain from "../images/AboutPage/mountain.png";\par
+import \{ useEffect \} from "react";\par
+import \{ Helmet, HelmetProvider \} from 'react-helmet-async';\par
+function About() \{\par
+  useEffect(() => \{\par
+    window.scrollTo(\{ top: 0, left: 0, behavior: "smooth" \});\par
+  \}, []);\par
+  return (\par
+    <>\par
+     <HelmetProvider>\par
+\par
+<Helmet>\par
+  <title>About Us | Ultrafly Solutions Meta \par
+  </title>\par
+  <meta name="description" content="Learn more about Ultrafly Solutions, our mission, values, and the expert team driving innovative IT solutions for businesses worldwide " />\par
+  <meta name="keywords" content="Iabout Ultrafly Solutions, IT company, tech solutions, company mission, expert team" />\par
+</Helmet>\par
+\par
+</HelmetProvider>\par
+      <section className="login-section">\par
+        <div className="container page-padding">\par
+          <h1 className="text-blue-500 text-center text-3xl md:text-4xl font-bold pt-24 pb-12 ">\par
+          ABOUT ULTRAFLY SOLUTIONS\par
+          </h1>\par
+          <div className="grid md:grid-cols-3">\par
+            \{/* title div -- */\}\par
+            <div className="flex flex-col !text-left relative items-right justify-center col-span-2">\par
+              <h2 className="text-black text-2xl md:text-3xl uppercase font-bold py-4">\par
+              Our Mission and Vision\par
+              </h2>\par
+\par
+              <h2 className=" text-1xl md:text-2xl max-w-[53rem] font-bold mb-4">\par
+              Our Story\par
+              </h2>\par
+              <p className="text-[#646464] font-medium text-[15px] text-justify max-w-[50rem] ">\par
+                Ultrafly Solutions Private Limited was founded in 2019 at\par
+                Coimbatore based company working towards excellence in the\par
+                Computers, and believe in pursuing business through innovation\par
+                and technology.\par
+              </p>\par
+              <MainButton\par
+                color=\{`!text-white`\}\par
+                bg=\{`bg-sky-400`\}\par
+                goTo="/contact-us"\par
+                text="Meet the Team"\par
+                arrowColor=\{`!text-white`\}\par
+                cN="pricing-cta blog-cta"\par
+              />\par
+            </div>\par
+            \{/*  */\}\par
+            <div className="relative">\par
+              <img\par
+                src=\{GirlRunning\}\par
+                alt="Timeline of UltraFly Solutions' Journey"\par
+                className="girl-running"\par
+              />\par
+              <img src=\{GirlRedBg\} alt="Timeline of UltraFly Solutions' Journey" className="girl-bg" />\par
+              <img src=\{GirlWind\} alt="Timeline of UltraFly Solutions' Journey" className="girl-wind" />\par
+            </div>\par
+          </div>\par
+          \{/*  */\}\par
+          <div className="mt-[10rem]">\par
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-6 w-full">\par
+  \{/* Our Values Section */\}\par
+  <div className="bg-white h-80 md:h-[43rem] flex flex-col justify-center items-center text-center px-4 rounded-lg shadow-lg transition duration-300 hover:shadow-xl hover:animate-left-to-right">\par
+    <img\par
+      src=\{Target\}\par
+      alt="UltraFly Solutions Team"\par
+      className="w-1/3 md:w-[9rem] transition duration-300 transform hover:rotate-6"\par
+    />\par
+    <h3 className="text-2xl md:text-[36px] font-bold mt-3 text-blue-600">\par
+      Our Values\par
+    </h3>\par
+    <p className="text-[8px] text-justify md:text-[16px] font-medium text-[#646464] mt-5">\par
+      Harnessing agile, innovative technologies, we devise adaptable solutions,\par
+      enabling your business to thrive amidst evolving demands and dynamic\par
+      environments seamlessly.\par
+    </p>\par
+  </div>\par
+\par
+  \{/* Image Section */\}\par
+  <div className="bg-gray-200 h-80 md:h-[43rem] rounded-lg shadow-lg overflow-hidden transition duration-300 hover:animate-pulse">\par
+    <img\par
+      src=\{Img3\}\par
+      alt="UltraFly Solutions Office"\par
+      className="w-full h-full object-cover transition duration-300 hover:scale-105"\par
+    />\par
+  </div>\par
+\par
+  \{/* Image Section */\}\par
+  <div className="bg-gray-200 h-80 md:h-[43rem] rounded-lg shadow-lg overflow-hidden transition duration-300 hover:animate-pulse">\par
+    <img\par
+      src=\{Img4\}\par
+      alt="About Image"\par
+      className="w-full h-full object-cover transition duration-300 hover:scale-105"\par
+    />\par
+  </div>\par
+\par
+  \{/* Our Journey Section */\}\par
+  <div className="bg-white h-80 md:h-[43rem] flex flex-col justify-center items-center text-center px-4 rounded-lg shadow-lg transition duration-300 hover:shadow-xl hover-right-to-left">\par
+    <img\par
+      src=\{Mountain\}\par
+      alt="Target Image"\par
+      className="w-1/3 md:w-[9rem] transition duration-300 transform hover:rotate-6"\par
+    />\par
+    <h2 className="text-2xl md:text-[36px] font-bold mt-3 text-blue-600">\par
+      Our Journey\par
+    </h2>\par
+    <p className="text-[8px] text-justify md:text-[16px] font-medium text-[#646464] mt-5">\par
+      Efficiently planning and delivering top-notch products swiftly and\par
+      cost-effectively, we minimize risks, enhance savings, and innovate\par
+      solutions, optimizing organizational efficiency seamlessly.\par
+    </p>\par
+  </div>\par
+</div>\par
+\par
+</div>\par
+\par
+        </div>\par
+        \{/* <Footer /> */\}\par
+      </section>\par
+    </>\par
+  );\par
+\}\par
+\par
+export default About;\par
+}
+ 

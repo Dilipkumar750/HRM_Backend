@@ -18,7 +18,7 @@ const employeeDetailsSchema = new mongoose.Schema({
     panNumber: { type: String, required: true },
     contactPersonName: { type: String, required: true },
     contactPersonRelationship: { type: String, required: true },
-    image: [{ type: String, required: true }]
+    image: [{ type: String, required: false }]
   },
   educationalDetails: {
     tenthMarks: { type: Number, required: true },
@@ -28,12 +28,15 @@ const employeeDetailsSchema = new mongoose.Schema({
     pgDomain: { type: String },
     pgPassedOutYear: { type: Number }
   },
-  experienceDetails: {
-    companyName: { type: String },
-    jobDescription: { type: String },
-    startDate: { type: String },
-    eventDate: { type: String }
-  },
+  experienceDetails: [
+  {
+    companyName: { type: String, default: "" },
+    jobDescription: { type: String, default: "" },
+    startDate: { type: String, default: "" },
+    eventDate: { type: String, default: "" }
+  }
+],
+
   documents: [
     {
       fileName: { type: String, required: true },

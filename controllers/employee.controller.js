@@ -22,7 +22,10 @@ export async function createEmployee(req, res) {
     employee_id, // Accept employee_id from request body
   } = req.body;
 
-  // Remove auto-generation logic for employee_id
+  // Add this validation
+  if (!employee_id) {
+    return res.status(400).json({ error: "employee_id is required in request body" });
+  }
 
   try {
     const salt = await bcrypt.genSalt(10);
@@ -43,7 +46,7 @@ export async function createEmployee(req, res) {
 
     const activationRoute = `${process.env.BASE_URL}/auth/login`;
 
-    const transporter = nodemailer.createTransport({
+    const transporter = nodemailer  .createTransport({
       service: "Gmail",
       auth: {
         user: process.env.EMAIL_USER,

@@ -79,6 +79,11 @@ const upload = multer({
   { name: "panCard", maxCount: 1 },
   { name: "ugDegreeOrMarksheet", maxCount: 1 },
   { name: "aadharCard", maxCount: 1 },
+  { name: "pgDegreeCertificate", maxCount: 1 },
+  { name: "previousCompanyOfferLetter", maxCount: 1 },
+  { name: "previousCompanyReleavingLetter", maxCount: 1 },
+  { name: "experienceLetter", maxCount: 1 },
+  { name: "photo", maxCount: 1 }
 ]);
 
 export default upload;

@@ -325,15 +325,14 @@
 //     res.status(500).json({ success: false, message: "Failed to save employee", error: error.message });
 //   }
 // };
-
 import EmployeeDetails from "../models/EmployeeDetails.js";
 
 // ✅ Save New Employee
 export const saveEmployee = async (req, res) => {
   try {
     const { jsonData } = req.body;
-    const parsedData = JSON.parse(jsonData);
-    const files = req.files;
+    const parsedData = JSON.parse(jsonData || "{}");
+    const files = req.files || {};
 
     const {
       personalDetails,
@@ -343,26 +342,15 @@ export const saveEmployee = async (req, res) => {
       bankDetails
     } = parsedData;
 
-    const employee_id = personalDetails?.employee_id;
+    const employee_id = personalDetails?.employee_id?.trim();
 
     // ✅ Validation
-    // if (!employee_id || !personalDetails?.name) {
-    //   return res.status(400).json({ success: false, message: "Employee ID and personal name are required" });
-    // }
-   if (
-  !employee_id ||
-  !personalDetails?.name ||
-  !personalDetails?.email ||
-  personalDetails.email === null ||
-  personalDetails.email === ""
-) {
-  return res.status(400).json({
-    success: false,
-    message: "Employee ID, name, and email are required and email cannot be null or empty"
-  });
-}
-
-
+    if (!employee_id || !personalDetails?.name || !personalDetails?.email?.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Employee ID, name, and email are required"
+      });
+    }
 
     if (!addressDetails?.zipCode) {
       return res.status(400).json({ success: false, message: "Address details are required" });
@@ -377,9 +365,8 @@ export const saveEmployee = async (req, res) => {
       return res.status(400).json({ success: false, message: "Incomplete bank details" });
     }
 
-    // ✅ Check for duplicate
-    const existing = await EmployeeDetails.findOne({ employee_id });
-    if (existing) {
+    // ✅ Check duplicate
+    if (await EmployeeDetails.findOne({ employee_id })) {
       return res.status(400).json({ success: false, message: "Employee already exists" });
     }
 
@@ -390,9 +377,9 @@ export const saveEmployee = async (req, res) => {
         ).filter(Boolean)
       : [];
 
-    // ✅ Process documents
+    // ✅ Process documents from Multer
     const documents = [];
-    for (let field in files) {
+    Object.keys(files).forEach(field => {
       files[field].forEach(file => {
         documents.push({
           fileName: file.originalname,
@@ -402,18 +389,31 @@ export const saveEmployee = async (req, res) => {
           uploadedAt: new Date()
         });
       });
-    }
+    });
 
-    if (documents.length === 0) {
+    if (!documents.length) {
       return res.status(400).json({ success: false, message: "At least one document is required" });
     }
 
-    // ✅ Save to DB
+    // ✅ Normalize experienceDetails to array
+    let normalizedExperienceDetails = [];
+    if (Array.isArray(experienceDetails)) {
+      normalizedExperienceDetails = experienceDetails;
+    } else if (experienceDetails?.experiences && Array.isArray(experienceDetails.experiences)) {
+      normalizedExperienceDetails = experienceDetails.experiences;
+    }
+
+    // ✅ Save employee
     const employee = new EmployeeDetails({
       employee_id,
-      personalDetails: { ...personalDetails, image: imageArray },
+      personalDetails: {
+        ...personalDetails,
+        image: imageArray.map(img =>
+          img.startsWith("/uploads") ? img : `/uploads/${img}`
+        )
+      },
       educationalDetails,
-      experienceDetails,
+      experienceDetails: normalizedExperienceDetails,
       documents,
       addressDetails,
       bankDetails
@@ -421,7 +421,11 @@ export const saveEmployee = async (req, res) => {
 
     await employee.save();
 
-    res.status(201).json({ success: true, message: "Employee saved successfully", data: employee });
+    res.status(201).json({
+      success: true,
+      message: "Employee saved successfully",
+      data: employee
+    });
 
   } catch (error) {
     console.error("Save Error:", error);
@@ -435,11 +439,12 @@ export const getAllEmployees = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
-    const employees = await EmployeeDetails.find()
-      .skip((page - 1) * limit)
-      .limit(limit);
-
-    const count = await EmployeeDetails.countDocuments();
+    const [employees, count] = await Promise.all([
+      EmployeeDetails.find()
+        .skip((page - 1) * limit)
+        .limit(limit),
+      EmployeeDetails.countDocuments()
+    ]);
 
     res.status(200).json({
       success: true,
@@ -468,16 +473,27 @@ export const getEmployeeById = async (req, res) => {
   }
 };
 
-// ✅ Update
+// ✅ Update Employee
 export const updateEmployee = async (req, res) => {
   try {
-    const { employee_id, ...rest } = req.body;
+    const updates = { ...req.body };
+
+    // ✅ Normalize experienceDetails if provided
+    if (updates.experienceDetails && !Array.isArray(updates.experienceDetails)) {
+      if (Array.isArray(updates.experienceDetails.experiences)) {
+        updates.experienceDetails = updates.experienceDetails.experiences;
+      }
+    }
+
     const updated = await EmployeeDetails.findOneAndUpdate(
       { employee_id: req.params.id },
-      { $set: rest },
+      { $set: updates },
       { new: true, runValidators: true }
     );
-    if (!updated) return res.status(404).json({ success: false, message: "Not found" });
+
+    if (!updated) {
+      return res.status(404).json({ success: false, message: "Employee not found" });
+    }
 
     res.status(200).json({ success: true, data: updated });
   } catch (error) {
@@ -485,13 +501,14 @@ export const updateEmployee = async (req, res) => {
   }
 };
 
-// ✅ Delete
+// ✅ Delete Employee
 export const deleteEmployee = async (req, res) => {
   try {
     const deleted = await EmployeeDetails.findOneAndDelete({ employee_id: req.params.id });
-    if (!deleted) return res.status(404).json({ success: false, message: "Not found" });
-
-    res.status(200).json({ success: true, message: "Deleted" });
+    if (!deleted) {
+      return res.status(404).json({ success: false, message: "Employee not found" });
+    }
+    res.status(200).json({ success: true, message: "Deleted successfully" });
   } catch (error) {
     res.status(500).json({ success: false, message: "Delete error", error: error.message });
   }
